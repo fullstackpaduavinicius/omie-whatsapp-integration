@@ -18,22 +18,57 @@ const whatsappService_1 = require("../services/whatsappService");
 const router = express_1.default.Router();
 router.post("/enviar-notificacao", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Vamos combinar as informações de clientes e pedidos, por exemplo.
         const clientes = yield (0, omieService_1.listarClientes)();
         const pedidos = yield (0, omieService_1.listarPedidos)();
-        // Suponha que estamos enviando uma notificação para todos os clientes com base em seus pedidos
-        const clientesComNotificacao = clientes === null || clientes === void 0 ? void 0 : clientes.map((cliente) => {
-            const clientePedidos = pedidos.filter((pedido) => pedido.cliente_id === cliente.id);
-            const message = `Você tem ${clientePedidos.length} novos pedidos.`;
-            return (0, whatsappService_1.enviarMensagem)(cliente.telefone, message); // Enviar a mensagem via WhatsApp
+        const notificacoes = clientes.map((cliente) => {
+            const clientePedidos = pedidos.filter((pedido) => pedido.cliente.id === cliente.codigo_cliente_omie);
+            if (clientePedidos.length > 0) {
+                const message = `Olá ${cliente.nome_fantasia}, você tem ${clientePedidos.length} novos pedidos em nosso sistema.`;
+                return (0, whatsappService_1.enviarMensagem)(cliente.telefone1, message);
+            }
         });
-        // Espera todas as mensagens serem enviadas
-        yield Promise.all(clientesComNotificacao);
+        yield Promise.all(notificacoes);
         res.status(200).send("Notificações enviadas com sucesso!");
     }
     catch (error) {
         console.error("Erro ao enviar notificações:", error);
         res.status(500).send("Erro ao enviar notificações.");
+    }
+}));
+router.get("/clientes", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const clientes = yield (0, omieService_1.listarClientes)();
+        res.status(200).json(clientes);
+    }
+    catch (error) {
+        res.status(500).send("Erro ao listar clientes.");
+    }
+}));
+router.get("/pedidos", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const pedidos = yield (0, omieService_1.listarPedidos)();
+        res.status(200).json(pedidos);
+    }
+    catch (error) {
+        res.status(500).send("Erro ao listar pedidos.");
+    }
+}));
+router.get("/contas-a-receber", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const contas = yield (0, omieService_1.listarContasAReceber)();
+        res.status(200).json(contas);
+    }
+    catch (error) {
+        res.status(500).send("Erro ao listar contas a receber.");
+    }
+}));
+router.get("/recebimento-nota-fiscal", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const recebimentos = yield (0, omieService_1.listarRecebimentoNotaFiscal)();
+        res.status(200).json(recebimentos);
+    }
+    catch (error) {
+        res.status(500).send("Erro ao listar recebimento de nota fiscal.");
     }
 }));
 exports.default = router;

@@ -8,15 +8,17 @@ router.post("/enviar-notificacao", async (req, res) => {
   try {
     const clientes = await listarClientes();
     const pedidos = await listarPedidos();
-    
-    const clientesComNotificacao = clientes?.map((cliente: any) => {
-      const clientePedidos = pedidos.filter((pedido: any) => pedido.cliente_id === cliente.id);
-      const message = `Você tem ${clientePedidos.length} novos pedidos.`;
+
+    const notificacoes = clientes.map((cliente: any) => {
+      const clientePedidos = pedidos.filter((pedido: any) => pedido.cliente.id === cliente.codigo_cliente_omie);
       
-      return enviarMensagem(cliente.telefone, message);  
+      if (clientePedidos.length > 0) {
+        const message = `Olá ${cliente.nome_fantasia}, você tem ${clientePedidos.length} novos pedidos em nosso sistema.`;
+        return enviarMensagem(cliente.telefone1, message);
+      }
     });
 
-    await Promise.all(clientesComNotificacao);
+    await Promise.all(notificacoes);
 
     res.status(200).send("Notificações enviadas com sucesso!");
   } catch (error) {

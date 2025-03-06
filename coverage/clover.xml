@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1741294779949" clover="3.2.0">
+  <project timestamp="1741294779949" name="All files">
+    <metrics statements="42" coveredstatements="36" conditionals="29" coveredconditionals="6" methods="6" coveredmethods="6" elements="77" coveredelements="48" complexity="0" loc="42" ncloc="42" packages="2" files="4" classes="4"/>
+    <package name="config">
+      <metrics statements="6" coveredstatements="6" conditionals="8" coveredconditionals="4" methods="0" coveredmethods="0"/>
+      <file name="env.ts" path="C:\Users\padua\Desktop\omie-whatsapp-integration\src\config\env.ts">
+        <metrics statements="6" coveredstatements="6" conditionals="8" coveredconditionals="4" methods="0" coveredmethods="0"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="5" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="7" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="8" count="2" type="cond" truecount="1" falsecount="1"/>
+      </file>
+    </package>
+    <package name="services">
+      <metrics statements="36" coveredstatements="30" conditionals="21" coveredconditionals="2" methods="6" coveredmethods="6"/>
+      <file name="notificationService.ts" path="C:\Users\padua\Desktop\omie-whatsapp-integration\src\services\notificationService.ts">
+        <metrics statements="16" coveredstatements="12" conditionals="4" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="8" count="2" type="stmt"/>
+        <line num="10" count="2" type="cond" truecount="1" falsecount="2"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="22" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+      </file>
+      <file name="omieService.ts" path="C:\Users\padua\Desktop\omie-whatsapp-integration\src\services\omieService.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+      </file>
+      <file name="whatsappService.ts" path="C:\Users\padua\Desktop\omie-whatsapp-integration\src\services\whatsappService.ts">
+        <metrics statements="13" coveredstatements="11" conditionals="17" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="28" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

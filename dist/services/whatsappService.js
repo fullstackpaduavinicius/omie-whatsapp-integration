@@ -16,18 +16,29 @@ exports.enviarMensagem = void 0;
 const axios_1 = __importDefault(require("axios"));
 const env_1 = require("../config/env");
 const enviarMensagem = (phone, message) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c;
     const data = {
-        phone: phone,
-        message: message,
+        phone,
+        message,
         token: env_1.WHATSAPP_API_KEY,
     };
     try {
-        const response = yield axios_1.default.post(env_1.WHATSAPP_API_URL, data);
+        const response = yield axios_1.default.post(env_1.WHATSAPP_API_URL, data, {
+            timeout: 5000, // Timeout de 5 segundos
+        });
         return response.data;
     }
     catch (error) {
-        console.error("Erro ao enviar mensagem:", error);
-        throw error;
+        if (axios_1.default.isAxiosError(error)) {
+            console.error("Erro ao enviar mensagem:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+            // Retornar uma resposta padronizada para erros da API
+            return {
+                success: false,
+                error: ((_c = (_b = error.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.error) || "Erro ao se comunicar com a API",
+            };
+        }
+        console.error("Erro desconhecido:", error);
+        return { success: false, error: "Erro desconhecido ao enviar mensagem" };
     }
 });
 exports.enviarMensagem = enviarMensagem;

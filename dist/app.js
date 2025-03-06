@@ -7,12 +7,9 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
-// Carregar variáveis de ambiente
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-// Configurar CORS e body parser
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// Configurar as rotas para notificações
 app.use("/api", notificationRoutes_1.default);
 exports.default = app;

@@ -16,7 +16,6 @@ exports.listarPedidos = exports.listarContasAReceber = exports.listarRecebimento
 const axios_1 = __importDefault(require("axios"));
 const env_1 = require("../config/env");
 const OMIE_BASE_URL = "https://app.omie.com.br/api/v1/";
-// Função para listar clientes
 const listarClientes = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = {
         call: "ListarClientes",
@@ -34,25 +33,23 @@ const listarClientes = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.listarClientes = listarClientes;
-// Função para listar recebimentos de nota fiscal
 const listarRecebimentoNotaFiscal = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = {
-        call: "RecebimentoNFE",
+        call: "ListarRecebimentosNFE",
         app_key: env_1.OMIE_API_KEY,
         app_secret: env_1.OMIE_APP_SECRET,
         param: [{ pagina: 1, registros_por_pagina: 50 }],
     };
     try {
-        const response = yield axios_1.default.post(`${OMIE_BASE_URL}produtos/recebimentonfe/`, data);
+        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/recebimentonfe/`, data);
         return response.data;
     }
     catch (error) {
-        console.error("Erro ao listar recebimento de nota fiscal:", error);
+        console.error("Erro ao listar recebimentos de nota fiscal:", error);
         throw error;
     }
 });
 exports.listarRecebimentoNotaFiscal = listarRecebimentoNotaFiscal;
-// Função para listar contas a receber
 const listarContasAReceber = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = {
         call: "ListarContasAReceber",
@@ -61,7 +58,7 @@ const listarContasAReceber = () => __awaiter(void 0, void 0, void 0, function* (
         param: [{ pagina: 1, registros_por_pagina: 50 }],
     };
     try {
-        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/contareceber/`, data);
+        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/contasareceber/`, data);
         return response.data;
     }
     catch (error) {
@@ -70,7 +67,6 @@ const listarContasAReceber = () => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.listarContasAReceber = listarContasAReceber;
-// Função para listar pedidos
 const listarPedidos = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = {
         call: "ListarPedidos",
