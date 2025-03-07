@@ -12,66 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listarPedidos = exports.listarContasAReceber = exports.listarRecebimentoNotaFiscal = exports.listarClientes = void 0;
+exports.listarRecebimentoNotaFiscal = exports.listarContasAReceber = exports.listarClientes = exports.verificarStatusPedido = exports.listarPedidos = void 0;
+// src/services/omieService.ts
 const axios_1 = __importDefault(require("axios"));
-const env_1 = require("../config/env");
+const OMIE_API_KEY = process.env.OMIE_API_KEY;
+const OMIE_APP_SECRET = process.env.OMIE_APP_SECRET;
 const OMIE_BASE_URL = "https://app.omie.com.br/api/v1/";
-const listarClientes = () => __awaiter(void 0, void 0, void 0, function* () {
-    const data = {
-        call: "ListarClientes",
-        app_key: env_1.OMIE_API_KEY,
-        app_secret: env_1.OMIE_APP_SECRET,
-        param: [{ pagina: 1, registros_por_pagina: 50 }],
-    };
-    try {
-        const response = yield axios_1.default.post(`${OMIE_BASE_URL}geral/clientes/`, data);
-        return response.data;
-    }
-    catch (error) {
-        console.error("Erro ao listar clientes:", error);
-        throw error;
-    }
-});
-exports.listarClientes = listarClientes;
-const listarRecebimentoNotaFiscal = () => __awaiter(void 0, void 0, void 0, function* () {
-    const data = {
-        call: "ListarRecebimentosNFE",
-        app_key: env_1.OMIE_API_KEY,
-        app_secret: env_1.OMIE_APP_SECRET,
-        param: [{ pagina: 1, registros_por_pagina: 50 }],
-    };
-    try {
-        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/recebimentonfe/`, data);
-        return response.data;
-    }
-    catch (error) {
-        console.error("Erro ao listar recebimentos de nota fiscal:", error);
-        throw error;
-    }
-});
-exports.listarRecebimentoNotaFiscal = listarRecebimentoNotaFiscal;
-const listarContasAReceber = () => __awaiter(void 0, void 0, void 0, function* () {
-    const data = {
-        call: "ListarContasAReceber",
-        app_key: env_1.OMIE_API_KEY,
-        app_secret: env_1.OMIE_APP_SECRET,
-        param: [{ pagina: 1, registros_por_pagina: 50 }],
-    };
-    try {
-        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/contasareceber/`, data);
-        return response.data;
-    }
-    catch (error) {
-        console.error("Erro ao listar contas a receber:", error);
-        throw error;
-    }
-});
-exports.listarContasAReceber = listarContasAReceber;
+// Função que lista os pedidos
 const listarPedidos = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = {
         call: "ListarPedidos",
-        app_key: env_1.OMIE_API_KEY,
-        app_secret: env_1.OMIE_APP_SECRET,
+        app_key: OMIE_API_KEY,
+        app_secret: OMIE_APP_SECRET,
         param: [{ pagina: 1, registros_por_pagina: 50 }],
     };
     try {
@@ -80,7 +32,90 @@ const listarPedidos = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         console.error("Erro ao listar pedidos:", error);
-        throw error;
+        throw new Error("Erro ao listar pedidos: Erro na API");
     }
 });
 exports.listarPedidos = listarPedidos;
+// Função que verifica o status de um pedido
+const verificarStatusPedido = (codigoPedido) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const data = {
+        call: "ListarPedidos",
+        app_key: OMIE_API_KEY,
+        app_secret: OMIE_APP_SECRET,
+        param: [{ codigo_pedido: codigoPedido }],
+    };
+    try {
+        const response = yield axios_1.default.post(`${OMIE_BASE_URL}produtos/pedido/`, data);
+        const pedido = response.data[0]; // Supondo que o pedido esteja na primeira posição do array
+        if (pedido) {
+            return pedido.status; // Retorna o status do pedido
+        }
+        else {
+            throw new Error("Pedido não encontrado.");
+        }
+    }
+    catch (error) {
+        if (axios_1.default.isAxiosError(error)) {
+            console.error("Erro ao verificar status do pedido:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+            throw new Error("Erro ao verificar status do pedido: " + error.message);
+        }
+        console.error("Erro desconhecido:", error);
+        throw new Error("Erro desconhecido ao verificar status do pedido.");
+    }
+});
+exports.verificarStatusPedido = verificarStatusPedido;
+// Função que lista os clientes cadastrados
+const listarClientes = () => __awaiter(void 0, void 0, void 0, function* () {
+    const data = {
+        call: "ListarClientes",
+        app_key: OMIE_API_KEY,
+        app_secret: OMIE_APP_SECRET,
+        param: [{ pagina: 1, registros_por_pagina: 50 }],
+    };
+    try {
+        const response = yield axios_1.default.post(`${OMIE_BASE_URL}geral/clientes/`, data);
+        return response.data;
+    }
+    catch (error) {
+        console.error("Erro ao listar clientes:", error);
+        throw new Error("Erro ao listar clientes: Erro na API");
+    }
+});
+exports.listarClientes = listarClientes;
+// Função que lista as contas a receber
+const listarContasAReceber = () => __awaiter(void 0, void 0, void 0, function* () {
+    const data = {
+        call: "ListarContasReceber",
+        app_key: OMIE_API_KEY,
+        app_secret: OMIE_APP_SECRET,
+        param: [{ pagina: 1, registros_por_pagina: 50 }],
+    };
+    try {
+        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/contareceber/`, data);
+        return response.data;
+    }
+    catch (error) {
+        console.error("Erro ao listar contas a receber:", error);
+        throw new Error("Erro ao listar contas a receber: Erro na API");
+    }
+});
+exports.listarContasAReceber = listarContasAReceber;
+// Função que lista os recebimentos de notas fiscais
+const listarRecebimentoNotaFiscal = () => __awaiter(void 0, void 0, void 0, function* () {
+    const data = {
+        call: "ListarRecebimentos",
+        app_key: OMIE_API_KEY,
+        app_secret: OMIE_APP_SECRET,
+        param: [{ pagina: 1, registros_por_pagina: 50 }],
+    };
+    try {
+        const response = yield axios_1.default.post(`${OMIE_BASE_URL}financas/recebimentos/`, data);
+        return response.data;
+    }
+    catch (error) {
+        console.error("Erro ao listar recebimentos de notas fiscais:", error);
+        throw new Error("Erro ao listar recebimentos de notas fiscais: Erro na API");
+    }
+});
+exports.listarRecebimentoNotaFiscal = listarRecebimentoNotaFiscal;

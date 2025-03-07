@@ -10,8 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processNotifications = void 0;
+// src/services/notificationService.ts
 const omieService_1 = require("./omieService");
-const whatsappService_1 = require("./whatsappService");
+const whatsappService_1 = require("./whatsappService"); // Aqui você pode integrar com o seu serviço de envio de WhatsApp
+// Função que processa as notificações dos pedidos
 const processNotifications = () => __awaiter(void 0, void 0, void 0, function* () {
     const pedidos = yield (0, omieService_1.listarPedidos)();
     for (const pedido of pedidos) {
@@ -26,8 +28,12 @@ const processNotifications = () => __awaiter(void 0, void 0, void 0, function* (
             case "Atrasado":
                 message = `Atenção! Seu pedido ${pedido.codigo_pedido} está com pagamento atrasado. Entre em contato.`;
                 break;
+            default:
+                console.log(`Status desconhecido para o pedido ${pedido.codigo_pedido}`);
+                continue;
         }
         if (message) {
+            // Envia a mensagem via WhatsApp
             yield (0, whatsappService_1.enviarMensagem)(pedido.cliente.telefone, message);
             console.log(`📢 Notificação enviada para ${pedido.cliente.telefone}: ${message}`);
         }

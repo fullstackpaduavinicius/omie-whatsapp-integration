@@ -17,7 +17,7 @@ describe("NotificationService", () => {
       {
         codigo_pedido: "123",
         status: "Aprovado",
-        cliente: { telefone: "5511999999999" },
+        cliente: { telefone: "5579988199339" },
       },
     ]);
 
@@ -28,7 +28,7 @@ describe("NotificationService", () => {
 
     // Verifica se a função enviarMensagem foi chamada corretamente
     expect(enviarMensagem).toHaveBeenCalledWith(
-      "5511999999999",
+      "5579988199339",
       "Olá, seu pedido 123 foi aprovado! ✅"
     );
   });
@@ -39,7 +39,7 @@ describe("NotificationService", () => {
       {
         codigo_pedido: "456",
         status: "Cancelado",
-        cliente: { telefone: "5511888888888" },
+        cliente: { telefone: "5579988199339" },
       },
     ]);
 

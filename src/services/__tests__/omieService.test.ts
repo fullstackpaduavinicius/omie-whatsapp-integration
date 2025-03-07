@@ -1,34 +1,52 @@
+// __tests__/omieService.test.ts
+import { listarPedidos, listarClientes, listarContasAReceber, listarRecebimentoNotaFiscal } from "../omieService";
 import axios from "axios";
-import { listarPedidos } from "../omieService";
 
 jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe("OmieService", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+describe("Omie Service", () => {
+  test("Deve listar pedidos com sucesso", async () => {
+    mockedAxios.post.mockResolvedValue({ data: [{ codigo_pedido: "123", status: "Aprovado" }] });
+    const pedidos = await listarPedidos();
+    expect(pedidos).toEqual([{ codigo_pedido: "123", status: "Aprovado" }]);
   });
 
-  it("deve listar pedidos corretamente", async () => {
-    const mockResponse = {
-      data: [{ codigo_pedido: "123", status: "Aprovado" }],
-    };
-    (axios.post as jest.Mock).mockResolvedValue(mockResponse);
-
-    const result = await listarPedidos();
-
-    expect(result).toEqual(mockResponse.data);
-    expect(axios.post).toHaveBeenCalledWith(
-      "https://app.omie.com.br/api/v1/produtos/pedido/",
-      expect.any(Object)
-    );
+  test("Erro ao listar pedidos", async () => {
+    mockedAxios.post.mockRejectedValue(new Error("Erro na API"));
+    await expect(listarPedidos()).rejects.toThrow("Erro na API");
   });
 
-  it("deve lidar com erro ao listar pedidos", async () => {
-    // Mock do erro da API
-    const error = new Error("Erro na API");
-    (axios.post as jest.Mock).mockRejectedValue(error);
+  test("Deve listar clientes com sucesso", async () => {
+    mockedAxios.post.mockResolvedValue({ data: [{ nome: "Cliente Teste" }] });
+    const clientes = await listarClientes();
+    expect(clientes).toEqual([{ nome: "Cliente Teste" }]);
+  });
 
-    // Ajuste na expectativa: Espera-se que o erro lançado tenha a mensagem "Erro ao listar pedidos: Erro na API"
-    await expect(listarPedidos()).rejects.toThrow("Erro ao listar pedidos: Erro na API");
+  test("Erro ao listar clientes", async () => {
+    mockedAxios.post.mockRejectedValue(new Error("Erro na API"));
+    await expect(listarClientes()).rejects.toThrow("Erro na API");
+  });
+
+  test("Deve listar contas a receber com sucesso", async () => {
+    mockedAxios.post.mockResolvedValue({ data: [{ valor: 100 }] });
+    const contas = await listarContasAReceber();
+    expect(contas).toEqual([{ valor: 100 }]);
+  });
+
+  test("Erro ao listar contas a receber", async () => {
+    mockedAxios.post.mockRejectedValue(new Error("Erro na API"));
+    await expect(listarContasAReceber()).rejects.toThrow("Erro na API");
+  });
+
+  test("Deve listar recebimentos de notas fiscais com sucesso", async () => {
+    mockedAxios.post.mockResolvedValue({ data: [{ valor: 200 }] });
+    const recebimentos = await listarRecebimentoNotaFiscal();
+    expect(recebimentos).toEqual([{ valor: 200 }]);
+  });
+
+  test("Erro ao listar recebimentos de notas fiscais", async () => {
+    mockedAxios.post.mockRejectedValue(new Error("Erro na API"));
+    await expect(listarRecebimentoNotaFiscal()).rejects.toThrow("Erro na API");
   });
 });

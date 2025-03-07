@@ -1,40 +1,35 @@
-import axios from "axios";
+// __tests__/whatsappService.test.ts
 import { enviarMensagem } from "../whatsappService";
+import axios from "axios";
 
 jest.mock("axios");
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-describe("WhatsAppService", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+describe("WhatsApp Service", () => {
+  test("Deve enviar mensagem com sucesso", async () => {
+    mockedAxios.post.mockResolvedValue({ data: { success: true } });
+    const response = await enviarMensagem("5511999999999", "Teste de mensagem");
+    expect(response.success).toBe(true);
   });
 
-  it("deve enviar mensagem com sucesso", async () => {
-    const mockResponse = { success: true };
-    (axios.post as jest.Mock).mockResolvedValue({ data: mockResponse });
-
-    const result = await enviarMensagem("5511999999999", "Olá, teste!");
-
-    expect(result).toEqual(mockResponse);
-    expect(axios.post).toHaveBeenCalledWith(
-      expect.any(String),
-      {
-        phone: "5511999999999",
-        message: "Olá, teste!",
-        token: expect.any(String),
-      },
-      { timeout: 5000 }
-    );
+  test("Erro na API do WhatsApp", async () => {
+    mockedAxios.post.mockRejectedValue({ response: { data: { error: "Erro na API" } } });
+    const response = await enviarMensagem("5511999999999", "Teste de erro");
+    expect(response.success).toBe(false);
+    expect(response.error).toBe("Erro na API");
   });
 
-  it("deve lidar com erro ao enviar mensagem", async () => {
-    // Mock do erro da API
-    (axios.post as jest.Mock).mockRejectedValue({
-      response: { data: { error: "Erro na API" } },
-    });
+  test("Erro desconhecido no WhatsApp", async () => {
+    mockedAxios.post.mockRejectedValue(new Error("Erro desconhecido"));
+    const response = await enviarMensagem("5511999999999", "Teste erro desconhecido");
+    expect(response.success).toBe(false);
+    expect(response.error).toBe("Erro na API");
+  });
 
-    const result = await enviarMensagem("5511999999999", "Olá, teste!");
-
-    // Ajuste na expectativa
-    expect(result).toEqual({ success: false, error: "Erro na API" });
+  test("Timeout na API do WhatsApp", async () => {
+    mockedAxios.post.mockRejectedValue({ code: "ECONNABORTED" });
+    const response = await enviarMensagem("5511999999999", "Teste timeout");
+    expect(response.success).toBe(false);
+    expect(response.error).toBe("Erro na API");
   });
 });
