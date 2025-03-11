@@ -2,7 +2,7 @@
 
 # ✨ Omie + WhatsApp Integration ✨
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![TypeScript](https://img.shields.io/badge/-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/) [![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/)
+ [![TypeScript](https://img.shields.io/badge/-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/) [![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/)
 
 ## 📄 Sobre o Projeto
 Este projeto tem como objetivo integrar o **Omie** e o **WhatsApp**, permitindo o envio automático de notificações para clientes sobre **status de pedidos, cobranças e notas fiscais**.
