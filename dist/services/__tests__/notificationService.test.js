@@ -25,14 +25,14 @@ describe("NotificationService", () => {
             {
                 codigo_pedido: "123",
                 status: "Aprovado",
-                cliente: { telefone: "5511999999999" },
+                cliente: { telefone: "5579988199339" },
             },
         ]);
         // Mock da função enviarMensagem
         whatsappService_1.enviarMensagem.mockResolvedValue({ success: true });
         yield (0, notificationService_1.processNotifications)();
         // Verifica se a função enviarMensagem foi chamada corretamente
-        expect(whatsappService_1.enviarMensagem).toHaveBeenCalledWith("5511999999999", "Olá, seu pedido 123 foi aprovado! ✅");
+        expect(whatsappService_1.enviarMensagem).toHaveBeenCalledWith("5579988199339", "Olá, seu pedido 123 foi aprovado! ✅");
     }));
     it("não deve enviar mensagem se o status do pedido não for reconhecido", () => __awaiter(void 0, void 0, void 0, function* () {
         // Mock da função listarPedidos
@@ -40,7 +40,7 @@ describe("NotificationService", () => {
             {
                 codigo_pedido: "456",
                 status: "Cancelado",
-                cliente: { telefone: "5511888888888" },
+                cliente: { telefone: "5579988199339" },
             },
         ]);
         yield (0, notificationService_1.processNotifications)();

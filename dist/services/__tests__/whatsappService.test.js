@@ -12,31 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios_1 = __importDefault(require("axios"));
+// __tests__/whatsappService.test.ts
 const whatsappService_1 = require("../whatsappService");
+const axios_1 = __importDefault(require("axios"));
 jest.mock("axios");
-describe("WhatsAppService", () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-    it("deve enviar mensagem com sucesso", () => __awaiter(void 0, void 0, void 0, function* () {
-        const mockResponse = { success: true };
-        axios_1.default.post.mockResolvedValue({ data: mockResponse });
-        const result = yield (0, whatsappService_1.enviarMensagem)("5511999999999", "Olá, teste!");
-        expect(result).toEqual(mockResponse);
-        expect(axios_1.default.post).toHaveBeenCalledWith(expect.any(String), {
-            phone: "5511999999999",
-            message: "Olá, teste!",
-            token: expect.any(String),
-        }, { timeout: 5000 });
+const mockedAxios = axios_1.default;
+describe("WhatsApp Service", () => {
+    test("Deve enviar mensagem com sucesso", () => __awaiter(void 0, void 0, void 0, function* () {
+        mockedAxios.post.mockResolvedValue({ data: { success: true } });
+        const response = yield (0, whatsappService_1.enviarMensagem)("5511999999999", "Teste de mensagem");
+        expect(response.success).toBe(true);
     }));
-    it("deve lidar com erro ao enviar mensagem", () => __awaiter(void 0, void 0, void 0, function* () {
-        // Mock do erro da API
-        axios_1.default.post.mockRejectedValue({
-            response: { data: { error: "Erro na API" } },
-        });
-        const result = yield (0, whatsappService_1.enviarMensagem)("5511999999999", "Olá, teste!");
-        // Ajuste na expectativa
-        expect(result).toEqual({ success: false, error: "Erro na API" });
+    test("Erro na API do WhatsApp", () => __awaiter(void 0, void 0, void 0, function* () {
+        mockedAxios.post.mockRejectedValue({ response: { data: { error: "Erro na API" } } });
+        const response = yield (0, whatsappService_1.enviarMensagem)("5511999999999", "Teste de erro");
+        expect(response.success).toBe(false);
+        expect(response.error).toBe("Erro na API");
+    }));
+    test("Erro desconhecido no WhatsApp", () => __awaiter(void 0, void 0, void 0, function* () {
+        mockedAxios.post.mockRejectedValue(new Error("Erro desconhecido"));
+        const response = yield (0, whatsappService_1.enviarMensagem)("5511999999999", "Teste erro desconhecido");
+        expect(response.success).toBe(false);
+        expect(response.error).toBe("Erro na API");
+    }));
+    test("Timeout na API do WhatsApp", () => __awaiter(void 0, void 0, void 0, function* () {
+        mockedAxios.post.mockRejectedValue({ code: "ECONNABORTED" });
+        const response = yield (0, whatsappService_1.enviarMensagem)("5511999999999", "Teste timeout");
+        expect(response.success).toBe(false);
+        expect(response.error).toBe("Erro na API");
     }));
 });

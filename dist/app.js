@@ -11,5 +11,6 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.use("/api", notificationRoutes_1.default);
+// Define as rotas principais
+app.use('/api', notificationRoutes_1.default);
 exports.default = app;

@@ -13,17 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
-const server_1 = __importDefault(require("../server"));
+const server_1 = __importDefault(require("../server")); // Garante que o server.ts exporte corretamente
 describe("API de envio de mensagens", () => {
     it("deve retornar erro ao enviar uma requisição sem dados", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield (0, supertest_1.default)(server_1.default).post("/enviar-mensagem").send({});
+        const response = yield (0, supertest_1.default)(server_1.default).post("/api/enviar-mensagem").send({});
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("erro");
     }));
     it("deve retornar erro se faltar número ou mensagem", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response1 = yield (0, supertest_1.default)(server_1.default).post("/enviar-mensagem").send({ numero: "123456789" });
+        const response1 = yield (0, supertest_1.default)(server_1.default).post("/api/enviar-mensagem").send({ numero: "123456789" });
         expect(response1.status).toBe(400);
-        const response2 = yield (0, supertest_1.default)(server_1.default).post("/enviar-mensagem").send({ mensagem: "Olá" });
+        expect(response1.body).toHaveProperty("erro");
+        const response2 = yield (0, supertest_1.default)(server_1.default).post("/api/enviar-mensagem").send({ mensagem: "Olá" });
         expect(response2.status).toBe(400);
+        expect(response2.body).toHaveProperty("erro");
     }));
 });

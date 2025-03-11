@@ -4,23 +4,12 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "npm run build && node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "test": "jest --config jest.config.js",
     "type-check": "tsc --noEmit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fullstackpaduavinicius/omie-whatsapp-integration.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/fullstackpaduavinicius/omie-whatsapp-integration/issues"
-  },
-  "homepage": "https://github.com/fullstackpaduavinicius/omie-whatsapp-integration#readme",
   "dependencies": {
     "axios": "^1.8.1",
     "cors": "^2.8.5",

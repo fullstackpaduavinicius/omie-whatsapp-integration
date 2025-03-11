@@ -23,18 +23,20 @@ const enviarMensagem = (phone, message) => __awaiter(void 0, void 0, void 0, fun
         token: env_1.WHATSAPP_API_KEY,
     };
     try {
+        console.log(`Enviando mensagem para ${phone}: ${message}...`);
         const response = yield axios_1.default.post(env_1.WHATSAPP_API_URL, data, {
             timeout: 5000, // Timeout de 5 segundos
         });
+        console.log("Mensagem enviada com sucesso:", response.data);
         return response.data;
     }
     catch (error) {
         if (axios_1.default.isAxiosError(error)) {
-            console.error("Erro ao enviar mensagem:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
+            console.error("Erro ao enviar mensagem para WhatsApp:", ((_a = error.response) === null || _a === void 0 ? void 0 : _a.data) || error.message);
             // Retornar a mensagem de erro da API
             return {
                 success: false,
-                error: ((_c = (_b = error.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.error) || "Erro na API", // Alinhado com a expectativa do teste
+                error: ((_c = (_b = error.response) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.error) || "Erro na API",
             };
         }
         console.error("Erro desconhecido:", error);

@@ -27,7 +27,9 @@ const listarPedidos = () => __awaiter(void 0, void 0, void 0, function* () {
         param: [{ pagina: 1, registros_por_pagina: 50 }],
     };
     try {
+        console.log("Buscando pedidos...");
         const response = yield axios_1.default.post(`${OMIE_BASE_URL}produtos/pedido/`, data);
+        console.log(`Pedidos encontrados: ${response.data.length}`);
         return response.data;
     }
     catch (error) {
@@ -46,9 +48,11 @@ const verificarStatusPedido = (codigoPedido) => __awaiter(void 0, void 0, void 0
         param: [{ codigo_pedido: codigoPedido }],
     };
     try {
+        console.log(`Verificando status do pedido: ${codigoPedido}`);
         const response = yield axios_1.default.post(`${OMIE_BASE_URL}produtos/pedido/`, data);
         const pedido = response.data[0]; // Supondo que o pedido esteja na primeira posição do array
         if (pedido) {
+            console.log(`Status do pedido ${codigoPedido}: ${pedido.status}`);
             return pedido.status; // Retorna o status do pedido
         }
         else {

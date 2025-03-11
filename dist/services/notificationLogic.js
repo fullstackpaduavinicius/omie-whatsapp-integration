@@ -10,14 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verificarEEnviarNotificacao = void 0;
-// src/services/notificationLogic.ts
 const omieService_1 = require("./omieService");
-const whatsappService_1 = require("./whatsappService"); // Função de envio de WhatsApp
-// Função que decide quando enviar a notificação
-const verificarEEnviarNotificacao = (codigoPedido, numeroWhatsApp) => __awaiter(void 0, void 0, void 0, function* () {
+const whatsappService_1 = require("./whatsappService");
+// Refatorando para facilitar os testes
+const verificarEEnviarNotificacao = (codigoPedido_1, numeroWhatsApp_1, ...args_1) => __awaiter(void 0, [codigoPedido_1, numeroWhatsApp_1, ...args_1], void 0, function* (codigoPedido, numeroWhatsApp, statusPedidoFn = omieService_1.verificarStatusPedido, enviarMensagemFn = whatsappService_1.enviarMensagem) {
     try {
-        const status = yield (0, omieService_1.verificarStatusPedido)(codigoPedido);
-        // Lógica de decisão para enviar notificação
+        console.log(`Verificando status do pedido #${codigoPedido}...`);
+        const status = yield statusPedidoFn(codigoPedido);
+        console.log(`Status do pedido #${codigoPedido}: ${status}`);
         let mensagem = "";
         if (status === "Aprovado") {
             mensagem = `Olá, seu pedido #${codigoPedido} foi aprovado! ✅`;
@@ -26,17 +26,17 @@ const verificarEEnviarNotificacao = (codigoPedido, numeroWhatsApp) => __awaiter(
             mensagem = `Seu pedido #${codigoPedido} foi enviado e está a caminho! 🚚`;
         }
         else {
-            console.log(`❌ O pedido #${codigoPedido} não está no status de envio ou aprovação, não será enviada notificação.`);
-            return;
+            console.log(`Status do pedido #${codigoPedido} não requer notificação.`);
+            return { success: false, message: "Status não requer notificação." };
         }
-        // Enviar a mensagem via WhatsApp
-        if (mensagem) {
-            yield (0, whatsappService_1.enviarMensagem)(numeroWhatsApp, mensagem);
-            console.log(`📢 Notificação enviada para ${numeroWhatsApp}: ${mensagem} ✅`);
-        }
+        console.log(`Enviando mensagem: ${mensagem} para ${numeroWhatsApp}...`);
+        yield enviarMensagemFn(numeroWhatsApp, mensagem);
+        console.log(`Mensagem enviada para ${numeroWhatsApp}: ${mensagem}`);
+        return { success: true, message: `Notificação enviada: ${mensagem}` };
     }
     catch (error) {
-        console.error("Erro ao verificar o status do pedido ou enviar notificação:", error);
+        console.error(`Erro ao verificar e enviar notificação para o pedido #${codigoPedido}:`, error);
+        return { success: false, error };
     }
 });
 exports.verificarEEnviarNotificacao = verificarEEnviarNotificacao;
