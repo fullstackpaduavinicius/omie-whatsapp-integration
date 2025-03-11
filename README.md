@@ -2,7 +2,7 @@
 
 # ✨ Omie + WhatsApp Integration ✨
 
- [![TypeScript](https://img.shields.io/badge/-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/) [![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/)
+ [![TypeScript](https://img.shields.io/badge/-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/) [![Node.js](https://img.shields.io/badge/Node.js-18.x-green?logo=node.js)](https://nodejs.org/) ![HTML5](https://img.shields.io/badge/HTML5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)
 
 ## 📄 Sobre o Projeto
 Este projeto tem como objetivo integrar o **Omie** e o **WhatsApp**, permitindo o envio automático de notificações para clientes sobre **status de pedidos, cobranças e notas fiscais**.
