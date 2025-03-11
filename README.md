@@ -102,8 +102,7 @@ Contribuições são bem-vindas! Para contribuir:
 4. **Push** para o repositório (`git push origin feature-minha-feature`).
 5. Crie um **Pull Request**.
 
-## 🛡️ Licença
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
 
 ---
 
